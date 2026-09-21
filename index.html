@@ -281,11 +281,27 @@
     border-top:1px solid var(--border);flex-shrink:0;
   }
 
-  .case-actions{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .quiz-actions{
+    margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .quiz-actions .btn-row{display:flex;gap:8px;align-items:center;}
+  .round-btn{
+    width:38px;height:38px;flex-shrink:0;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    font-size:17px;line-height:1;padding:0;
+  }
+  .round-btn:hover{background:var(--accent-soft);border-color:var(--accent);}
+  #student-name{
+    border:1px solid var(--border);border-radius:8px;padding:7px 11px;
+    font-size:13.5px;font-family:inherit;background:var(--surface);color:var(--text);
+    width:100%;
+  }
   .pdf-btn{
-    background:none;border:1px solid var(--border);color:var(--text);
-    border-radius:8px;padding:7px 12px;font-size:13.5px;font-weight:600;
-    display:inline-flex;align-items:center;gap:6px;
+    flex:1;background:none;border:1px solid var(--border);color:var(--text);
+    border-radius:8px;padding:0 12px;height:38px;font-size:13.5px;font-weight:600;
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
   }
   .pdf-btn:hover{background:var(--surface-2);}
 
@@ -317,7 +333,7 @@
   <header class="top">
     <span class="eyebrow">Simulação de anamnese &middot; endocrinologia da tireoide</span>
     <h1>Hospital Fictício Primeiros Cuidados</h1>
-    <p>Escolha perguntas de anamnese para reconstruir a história de cada paciente e decidir entre hipotireoidismo, hipertireoidismo (Graves), tireoidite de Hashimoto ou câncer de tireoide. Cada investigação tem no máximo <strong>10 perguntas:</strong> use-as com estratégia.</p>
+    <p>Escolha perguntas de anamnese para reconstruir a história de cada paciente e decidir entre hipotireoidismo, hipertireoidismo (Graves), tireoidite de Hashimoto ou câncer de tireoide. Cada investigação tem no máximo <strong>10 perguntas</strong>, use-as com estratégia.</p>
   </header>
 
   <div id="grid-view">
@@ -328,10 +344,6 @@
   </div>
 
   <div id="case-view">
-    <div class="case-actions">
-      <button class="back-btn" id="back-btn">&larr; Voltar aos casos</button>
-      <button class="pdf-btn" id="pdf-btn">&#128190; Salvar em PDF</button>
-    </div>
     <div class="case-layout">
       <div class="side-col">
         <div class="patient-panel" id="patient-panel"></div>
@@ -354,7 +366,7 @@
 
   const DIAGNOSIS_OPTIONS = [
     { id:'hipo',   label:'Hipotireoidismo (não autoimune)' },
-    { id:'graves', label:'Hipertireoidismo - Doença de Graves' },
+    { id:'graves', label:'Hipertireoidismo, Doença de Graves' },
     { id:'hashi',  label:'Tireoidite de Hashimoto' },
     { id:'cancer', label:'Câncer de tireoide (carcinoma papilífero)' },
   ];
@@ -377,7 +389,7 @@
       age:42,
       accent:'#3D6B8C',
       complaint:'"Não estou me sentindo bem ultimamente."',
-      opening:'Então... vim porque não estou me sentindo muito bem ultimamente. Isso começou há uns 10 meses e vem piorando aos poucos, já está atrapalhando até as coisas simples do meu dia a dia.',
+      opening:'Então, vim porque não estou me sentindo muito bem ultimamente. Isso começou há uns 10 meses e vem piorando aos poucos, já está atrapalhando até as coisas simples do meu dia a dia.',
       correct:'hipo',
       why:'Camila apresenta o conjunto clássico de manifestações de redução da atividade metabólica: fadiga, intolerância ao frio, ganho de peso, constipação, pele seca, queda de cabelo, dificuldade de concentração e redução da disposição física. O TSH elevado (9,8) associado ao T4 livre reduzido (0,68) confirma hipotireoidismo manifesto. A ausência de elevação de anti-TPO e anti-Tg, junto com uma ultrassonografia sem sinais de tireoidite, torna Hashimoto pouco provável, por isso o quadro é classificado como hipotireoidismo primário não autoimune.',
       physio:'Na redução da produção de T4 e T3, ocorre menor estímulo do metabolismo celular, o que reduz o gasto energético, a termogênese e diversas funções fisiológicas, daí o cansaço, a intolerância ao frio, a constipação e o ganho de peso. A menor ação dos hormônios tireoidianos também reduz mecanismos do metabolismo lipídico, favorecendo a elevação do LDL-colesterol.',
@@ -404,8 +416,8 @@
         q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento contínuo, nem nada pra tireoide.'),
         q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer com certeza, nunca conversei muito sobre isso na minha família.'),
         q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho cerca de 8 horas por dia sentada, num escritório.'),
-        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu 9,8, no exame o valor de referência é até 4,0.'),
-        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 0,68, no exame o valor de referência é a partir de 0,8.'),
+        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu 9,8 (o valor de referência é até 4,0).'),
+        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 0,68 (o valor de referência é a partir de 0,8).'),
         q('t3','exames','Você tem o resultado do T3 livre?','O T3 livre deu 2,3.'),
         q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','Os anticorpos anti-TPO e anti-Tg deram negativos.'),
         q('colesterol','exames','O colesterol foi avaliado?','Meu colesterol total deu 242 e o LDL deu 161.'),
@@ -419,7 +431,7 @@
       age:29,
       accent:'#C05746',
       complaint:'"Não estou me sentindo bem ultimamente."',
-      opening:'Oi! Vim porque não estou me sentindo bem ultimamente. Isso começou há uns 4 meses, e nas últimas semanas notei umas mudanças no meu corpo que me deixaram preocupada.',
+      opening:'Então, vim porque não estou me sentindo bem ultimamente. Isso começou há uns 4 meses, e nas últimas semanas notei umas mudanças no meu corpo que me deixaram preocupada.',
       correct:'graves',
       why:'O quadro de Juliana é de hipermetabolismo: perda de peso apesar do aumento do apetite, intolerância ao calor, sudorese, taquicardia, palpitações, tremor, insônia, aumento do trânsito intestinal e irritabilidade. O padrão laboratorial confirma hipertireoidismo primário (TSH muito baixo com T4 e T3 elevados), e a positividade do TRAb aponta especificamente para doença de Graves.',
       physio:'Na doença de Graves, autoanticorpos contra o receptor de TSH (TRAb) estimulam continuamente esse receptor, levando a tireoide a produzir e liberar quantidades excessivas de T4 e T3. O excesso de hormônios tireoidianos aumenta o metabolismo energético, a produção de calor e potencializa a resposta às catecolaminas, por isso surgem taquicardia, tremor, sudorese, ansiedade, intolerância ao calor e perda de peso.',
@@ -446,7 +458,7 @@
         q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento contínuo.'),
         q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer, nunca conversei muito sobre isso com a família.'),
         q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho durante o dia e estudo à noite, a rotina é bem corrida.'),
-        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu menor que 0,01, bem abaixo do normal porque a referência vai de 0,4 a 4,0.'),
+        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu menor que 0,01, bem abaixo do normal (referência 0,4 a 4,0).'),
         q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 3,1, bem acima do normal.'),
         q('t3','exames','Você tem o resultado do T3 livre?','O T3 livre deu 8,2, bem acima do normal.'),
         q('anticorpos','exames','Os anticorpos da tireoide (TRAb, anti-TPO) foram pedidos?','O TRAb deu positivo, e o anti-TPO também deu positivo.'),
@@ -460,7 +472,7 @@
       age:35,
       accent:'#6B5B95',
       complaint:'"Não estou me sentindo bem ultimamente."',
-      opening:'Olá... venho me sentindo muito cansada há quase um ano. Sinto muito frio, tenho prisão de ventre, e não consigo mais emagrecer como antes, mesmo tentando.',
+      opening:'Então, venho me sentindo muito cansada há quase um ano. Sinto muito frio, tenho prisão de ventre, e não consigo mais emagrecer como antes, mesmo tentando.',
       correct:'hashi',
       why:'Carolina tem manifestações típicas de hipotireoidismo (fadiga, intolerância ao frio, ganho de peso, constipação, pele seca, queda de cabelo, ciclos menstruais mais longos e intensos), mas há um dado que diferencia o caso: marcada positividade dos autoanticorpos tireoidianos (anti-TPO muito elevado e anti-Tg elevado), associada a um padrão ultrassonográfico compatível com tireoidite crônica. TSH elevado + T4 livre reduzido + anticorpos positivos = hipotireoidismo autoimune compatível com Hashimoto.',
       physio:'A tireoidite de Hashimoto é uma doença autoimune em que ocorre resposta imunológica contra componentes da tireoide, especialmente a tireoperoxidase e a tireoglobulina. A inflamação crônica leva progressivamente à lesão e destruição dos folículos tireoidianos, reduzindo a capacidade da glândula de produzir T4 e T3. Essa redução hormonal aumenta a secreção hipofisária de TSH, gerando o padrão observado. Vale notar: o consumo de soja, isoflavonas, selênio, zinco ou iodo não permite, sozinho, diagnosticar ou explicar a Hashimoto, são fatores dietéticos que interagem com a fisiologia tireoidiana, mas não substituem a avaliação clínica e laboratorial.',
@@ -500,7 +512,7 @@
       age:46,
       accent:'#B08628',
       complaint:'"Não estou me sentindo bem ultimamente."',
-      opening:'Então, estou preocupada porque percebi um caroço pequeno na frente do pescoço tomando banho. Não dói, mas às vezes sinto como se tivesse algo preso na garganta ao engolir coisas maiores.',
+      opening:'Então, vim porque percebi um caroço pequeno na frente do pescoço tomando banho. Não dói, mas às vezes sinto como se tivesse algo preso na garganta ao engolir coisas maiores.',
       correct:'cancer',
       why:'Marina tem dois achados distintos que precisam ser avaliados separadamente. O primeiro é um hipotireoidismo subclínico (TSH discretamente elevado com T4 livre normal, sem anticorpos positivos, sem padrão ultrassonográfico de tireoidite), uma alteração bioquímica discreta, não uma doença autoimune manifesta. O segundo, e o achado principal do caso, é um nódulo tireoidiano que evoluiu com características ultrassonográficas suspeitas (hipoecogenicidade, margens irregulares, microcalcificações) e foi confirmado por PAAF como Bethesda VI, carcinoma papilífero de tireoide. O diagnóstico não veio do TSH nem do pequeno crescimento do nódulo, e sim da avaliação de imagem e da citologia.',
       physio:'No hipotireoidismo subclínico, a tireoide ainda mantém T4 livre normal, mas precisa de mais estímulo hipofisário, elevando o TSH. Já o carcinoma papilífero resulta da transformação neoplásica das células foliculares da tireoide, com alterações moleculares que promovem proliferação celular e sobrevivência anormal, as alterações nucleares vistas na PAAF (núcleos aumentados e sobrepostos, clareamento da cromatina, sulcos e inclusões nucleares) permitem o diagnóstico citológico. É importante não associar automaticamente o TSH elevado ao nódulo: são achados que coexistem no mesmo caso, mas devem ser avaliados de forma independente.',
@@ -541,6 +553,7 @@
     state[p.id] = { count:0, log:[{type:'patient', text:p.opening}], asked:new Set(), openCategory:'sintomas', quizSelected:null, quizSubmitted:false, explainOpen:false, explainUnlocked:false, explainError:false, startedAt:null, finishedAt:null };
   });
   let currentId = null;
+  let studentName = '';
 
   const grid = document.getElementById('patient-grid');
   patients.forEach(p=>{
@@ -565,7 +578,7 @@
       const el = grid.querySelector(`[data-status="${p.id}"]`);
       const s = state[p.id];
       if(s.quizSubmitted){
-        el.textContent = s.quizSelected===p.correct ? 'Diagnóstico registrado: correto' : 'Diagnóstico registrado: revisar';
+        el.textContent = s.quizSelected===p.correct ? 'Diagnóstico registrado, correto' : 'Diagnóstico registrado, revisar';
       } else if(s.count>0){
         el.textContent = `${s.count}/${MAX_QUESTIONS} perguntas feitas`;
       } else {
@@ -577,19 +590,18 @@
 
   const gridView = document.getElementById('grid-view');
   const caseView = document.getElementById('case-view');
-  const backBtn = document.getElementById('back-btn');
   const chatLog = document.getElementById('chat-log');
   const qbank = document.getElementById('qbank');
   const limitNote = document.getElementById('limit-note');
   const patientPanel = document.getElementById('patient-panel');
   const quizPanel = document.getElementById('quiz-panel');
 
-  backBtn.addEventListener('click', ()=>{
+  function goBackToCases(){
     caseView.classList.remove('active');
     gridView.classList.remove('hidden');
     refreshGridStatus();
     currentId = null;
-  });
+  }
 
   function openCase(id){
     currentId = id;
@@ -634,7 +646,7 @@
   }
 
   function fmtDateTime(d){
-    if(!d) return '—';
+    if(!d) return 'não registrado';
     return d.toLocaleString('pt-BR', {
       timeZone:'America/Sao_Paulo', day:'2-digit', month:'2-digit', year:'numeric',
       hour:'2-digit', minute:'2-digit', second:'2-digit'
@@ -642,7 +654,7 @@
   }
 
   function fmtDuration(start, end){
-    if(!start || !end) return '—';
+    if(!start || !end) return 'não registrado';
     const totalSec = Math.max(0, Math.round((end-start)/1000));
     const m = Math.floor(totalSec/60);
     const sec = totalSec%60;
@@ -650,12 +662,11 @@
   }
 
   const printArea = document.getElementById('print-area');
-  const pdfBtn = document.getElementById('pdf-btn');
 
   function buildPrintReport(){
     const p = currentPatient();
     const s = state[p.id];
-    const diagLabel = s.quizSelected ? DIAGNOSIS_OPTIONS.find(o=>o.id===s.quizSelected).label : '—';
+    const diagLabel = s.quizSelected ? DIAGNOSIS_OPTIONS.find(o=>o.id===s.quizSelected).label : 'nenhuma hipótese selecionada ainda';
     const correctLabel = DIAGNOSIS_OPTIONS.find(o=>o.id===p.correct).label;
     const isCorrect = s.quizSubmitted && s.quizSelected === p.correct;
 
@@ -675,6 +686,7 @@
       <h1>Hospital Fictício Primeiros Cuidados</h1>
       <div class="pr-meta">Registro de investigação clínica &middot; relatório gerado em ${fmtDateTime(new Date())}</div>
       <div class="pr-grid">
+        <div><b>Aluno</b>${escapeHtml(studentName) || 'não informado'}</div>
         <div><b>Paciente</b>${escapeHtml(p.name)}, ${p.age} anos</div>
         <div><b>Perguntas utilizadas</b>${s.count}/${MAX_QUESTIONS}</div>
         <div><b>Início da investigação</b>${fmtDateTime(s.startedAt)}</div>
@@ -691,11 +703,6 @@
       ${qaHtml || '<p>Nenhuma pergunta realizada ainda.</p>'}
     `;
   }
-
-  pdfBtn.addEventListener('click', ()=>{
-    buildPrintReport();
-    window.print();
-  });
 
   function renderChat(){
     const p = currentPatient();
@@ -867,6 +874,13 @@
         ${s.quizSubmitted ? 'Diagnóstico registrado' : 'Confirmar diagnóstico'}
       </button>
       ${feedbackHtml}
+      <div class="quiz-actions">
+        <div class="btn-row">
+          <button type="button" class="round-btn" id="back-btn" title="Voltar aos casos" aria-label="Voltar aos casos">&larr;</button>
+          <button type="button" class="pdf-btn" id="pdf-btn">&#128190; Salvar em PDF</button>
+        </div>
+        <input type="text" id="student-name" placeholder="Seu nome" maxlength="60" value="${escapeHtml(studentName)}">
+      </div>
     `;
 
     if(!s.quizSubmitted){
@@ -913,6 +927,14 @@
       });
       pwInput.focus();
     }
+
+    document.getElementById('back-btn').addEventListener('click', goBackToCases);
+    document.getElementById('pdf-btn').addEventListener('click', ()=>{
+      buildPrintReport();
+      window.print();
+    });
+    const nameInput = document.getElementById('student-name');
+    nameInput.addEventListener('input', ()=>{ studentName = nameInput.value; });
   }
 
 })();
