@@ -317,12 +317,12 @@
   <header class="top">
     <span class="eyebrow">Simulação de anamnese &middot; endocrinologia da tireoide</span>
     <h1>Hospital Fictício Primeiros Cuidados</h1>
-    <p>Escolha perguntas de anamnese para reconstruir a história de cada paciente e decidir entre hipotireoidismo, hipertireoidismo (Graves), tireoidite de Hashimoto ou câncer de tireoide. Cada investigação tem no máximo <strong>10 perguntas</strong> — use-as com estratégia.</p>
+    <p>Escolha perguntas de anamnese para reconstruir a história de cada paciente e decidir entre hipotireoidismo, hipertireoidismo (Graves), tireoidite de Hashimoto ou câncer de tireoide. Cada investigação tem no máximo <strong>10 perguntas:</strong> use-as com estratégia.</p>
   </header>
 
   <div id="grid-view">
     <div class="instructions">
-      <b>Como investigar:</b> comece pelas perguntas de sintomas gerais. Depois de pelo menos 2 perguntas dessa categoria, hábitos e história é liberada; depois de mais 2 perguntas de hábitos, os exames são liberados. Cada pergunta conta para o limite de 10 e não pode ser repetida — pense antes de gastar suas perguntas.
+      <b>Como investigar:</b> comece pelas perguntas de sintomas gerais. Depois de pelo menos 2 perguntas dessa categoria, hábitos e história é liberada; depois de mais 2 perguntas de hábitos, os exames são liberados. Cada pergunta conta para o limite de 10 e não pode ser repetida, pense antes de gastar suas perguntas.
     </div>
     <div class="grid" id="patient-grid"></div>
   </div>
@@ -354,7 +354,7 @@
 
   const DIAGNOSIS_OPTIONS = [
     { id:'hipo',   label:'Hipotireoidismo (não autoimune)' },
-    { id:'graves', label:'Hipertireoidismo — Doença de Graves' },
+    { id:'graves', label:'Hipertireoidismo - Doença de Graves' },
     { id:'hashi',  label:'Tireoidite de Hashimoto' },
     { id:'cancer', label:'Câncer de tireoide (carcinoma papilífero)' },
   ];
@@ -377,10 +377,10 @@
       age:42,
       accent:'#3D6B8C',
       complaint:'"Não estou me sentindo bem ultimamente."',
-      opening:'Oi, doutor(a)... vim porque não estou me sentindo muito bem ultimamente. Isso começou há uns 10 meses e vem piorando aos poucos, já está atrapalhando até as coisas simples do meu dia a dia.',
+      opening:'Então... vim porque não estou me sentindo muito bem ultimamente. Isso começou há uns 10 meses e vem piorando aos poucos, já está atrapalhando até as coisas simples do meu dia a dia.',
       correct:'hipo',
-      why:'Camila apresenta o conjunto clássico de manifestações de redução da atividade metabólica: fadiga, intolerância ao frio, ganho de peso, constipação, pele seca, queda de cabelo, dificuldade de concentração e redução da disposição física. O TSH elevado (9,8) associado ao T4 livre reduzido (0,68) confirma hipotireoidismo manifesto. A ausência de elevação de anti-TPO e anti-Tg, junto com uma ultrassonografia sem sinais de tireoidite, torna Hashimoto pouco provável — por isso o quadro é classificado como hipotireoidismo primário não autoimune.',
-      physio:'Na redução da produção de T4 e T3, ocorre menor estímulo do metabolismo celular, o que reduz o gasto energético, a termogênese e diversas funções fisiológicas — daí o cansaço, a intolerância ao frio, a constipação e o ganho de peso. A menor ação dos hormônios tireoidianos também reduz mecanismos do metabolismo lipídico, favorecendo a elevação do LDL-colesterol.',
+      why:'Camila apresenta o conjunto clássico de manifestações de redução da atividade metabólica: fadiga, intolerância ao frio, ganho de peso, constipação, pele seca, queda de cabelo, dificuldade de concentração e redução da disposição física. O TSH elevado (9,8) associado ao T4 livre reduzido (0,68) confirma hipotireoidismo manifesto. A ausência de elevação de anti-TPO e anti-Tg, junto com uma ultrassonografia sem sinais de tireoidite, torna Hashimoto pouco provável, por isso o quadro é classificado como hipotireoidismo primário não autoimune.',
+      physio:'Na redução da produção de T4 e T3, ocorre menor estímulo do metabolismo celular, o que reduz o gasto energético, a termogênese e diversas funções fisiológicas, daí o cansaço, a intolerância ao frio, a constipação e o ganho de peso. A menor ação dos hormônios tireoidianos também reduz mecanismos do metabolismo lipídico, favorecendo a elevação do LDL-colesterol.',
       qa:[
         q('tempo','sintomas','Há quanto tempo isso começou?','Isso começou há uns 10 meses. No início achei que era só o corre-corre do trabalho, mas hoje atrapalha até as coisas simples do meu dia a dia.'),
         q('cansaco','sintomas','Como está sua disposição e energia?','Sinto um cansaço que não passa. Antes eu tinha disposição pra tudo, hoje faço minhas tarefas com muito mais esforço.'),
@@ -396,7 +396,7 @@
         q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Tenho tido dificuldade pra me concentrar no trabalho, parece que minha cabeça está mais devagar.'),
         q('menstru','sintomas','Como estão os ciclos menstruais?','Minha menstruação continua normal, sem mudanças que eu tenha notado.'),
         q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Não notei nenhum caroço nem nada diferente no meu pescoço.'),
-        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Meu humor está bem estável, não sinto irritabilidade fora do normal — só o cansaço mesmo.'),
+        q('humor','sintomas','Como está seu humor, notou irritabilidade ou ansiedade?','Meu humor está bem estável, não sinto irritabilidade fora do normal, só o cansaço mesmo.'),
         q('atividade','habitos','Pratica atividade física?','Trabalho cerca de 8 horas por dia sentada e hoje não faço atividade física regular. Antes eu caminhava, mas parei porque não tenho mais disposição.'),
         q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo e não bebo com frequência.'),
         q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Minha alimentação é meio monótona. No café da manhã tomo café com pão branco. No almoço, arroz, feijão, carne e pouco vegetal. Fruta como de vez em quando. Como peixe cerca de uma vez por semana e ovos umas 2 a 3 vezes na semana. Não sigo nenhuma dieta restritiva nem tomo suplemento.'),
@@ -404,8 +404,8 @@
         q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento contínuo, nem nada pra tireoide.'),
         q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer com certeza, nunca conversei muito sobre isso na minha família.'),
         q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho cerca de 8 horas por dia sentada, num escritório.'),
-        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu 9,8 (o valor de referência é até 4,0).'),
-        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 0,68 (o valor de referência é a partir de 0,8).'),
+        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu 9,8, no exame o valor de referência é até 4,0.'),
+        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 0,68, no exame o valor de referência é a partir de 0,8.'),
         q('t3','exames','Você tem o resultado do T3 livre?','O T3 livre deu 2,3.'),
         q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','Os anticorpos anti-TPO e anti-Tg deram negativos.'),
         q('colesterol','exames','O colesterol foi avaliado?','Meu colesterol total deu 242 e o LDL deu 161.'),
@@ -422,7 +422,7 @@
       opening:'Oi! Vim porque não estou me sentindo bem ultimamente. Isso começou há uns 4 meses, e nas últimas semanas notei umas mudanças no meu corpo que me deixaram preocupada.',
       correct:'graves',
       why:'O quadro de Juliana é de hipermetabolismo: perda de peso apesar do aumento do apetite, intolerância ao calor, sudorese, taquicardia, palpitações, tremor, insônia, aumento do trânsito intestinal e irritabilidade. O padrão laboratorial confirma hipertireoidismo primário (TSH muito baixo com T4 e T3 elevados), e a positividade do TRAb aponta especificamente para doença de Graves.',
-      physio:'Na doença de Graves, autoanticorpos contra o receptor de TSH (TRAb) estimulam continuamente esse receptor, levando a tireoide a produzir e liberar quantidades excessivas de T4 e T3. O excesso de hormônios tireoidianos aumenta o metabolismo energético, a produção de calor e potencializa a resposta às catecolaminas — por isso surgem taquicardia, tremor, sudorese, ansiedade, intolerância ao calor e perda de peso.',
+      physio:'Na doença de Graves, autoanticorpos contra o receptor de TSH (TRAb) estimulam continuamente esse receptor, levando a tireoide a produzir e liberar quantidades excessivas de T4 e T3. O excesso de hormônios tireoidianos aumenta o metabolismo energético, a produção de calor e potencializa a resposta às catecolaminas, por isso surgem taquicardia, tremor, sudorese, ansiedade, intolerância ao calor e perda de peso.',
       qa:[
         q('tempo','sintomas','Há quanto tempo isso começou?','Isso começou há cerca de 4 meses.'),
         q('cansaco','sintomas','Como está sua disposição e energia?','Sinto que estou com muita energia, quase agitada, mas ao mesmo tempo as palpitações atrapalham quando tento fazer esforço físico.'),
@@ -438,7 +438,7 @@
         q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Não tenho notado problema de concentração ou memória, só ansiedade mesmo.'),
         q('menstru','sintomas','Como estão os ciclos menstruais?','Não notei mudança na minha menstruação.'),
         q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Notei que meu pescoço parece um pouco mais inchado, mas não senti nenhum caroço.'),
-        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Tenho estado mais irritada e ansiosa que o normal.'),
+        q('humor','sintomas','Como está seu humor, notou irritabilidade ou ansiedade?','Tenho estado mais irritada e ansiosa que o normal.'),
         q('atividade','habitos','Pratica atividade física?','Eu corria três vezes por semana, mas parei porque as palpitações atrapalham.'),
         q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo. Tomo de duas a três xícaras de café por dia e às vezes bebida energética. Não bebo álcool com frequência.'),
         q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Aumentei a quantidade que como porque sinto muita fome. Como carne, ovos e leite regularmente, peixe umas duas vezes por semana e castanha de vez em quando.'),
@@ -446,7 +446,7 @@
         q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento contínuo.'),
         q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer, nunca conversei muito sobre isso com a família.'),
         q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho durante o dia e estudo à noite, a rotina é bem corrida.'),
-        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu menor que 0,01, bem abaixo do normal (referência 0,4 a 4,0).'),
+        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu menor que 0,01, bem abaixo do normal porque a referência vai de 0,4 a 4,0.'),
         q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 3,1, bem acima do normal.'),
         q('t3','exames','Você tem o resultado do T3 livre?','O T3 livre deu 8,2, bem acima do normal.'),
         q('anticorpos','exames','Os anticorpos da tireoide (TRAb, anti-TPO) foram pedidos?','O TRAb deu positivo, e o anti-TPO também deu positivo.'),
@@ -463,7 +463,7 @@
       opening:'Olá... venho me sentindo muito cansada há quase um ano. Sinto muito frio, tenho prisão de ventre, e não consigo mais emagrecer como antes, mesmo tentando.',
       correct:'hashi',
       why:'Carolina tem manifestações típicas de hipotireoidismo (fadiga, intolerância ao frio, ganho de peso, constipação, pele seca, queda de cabelo, ciclos menstruais mais longos e intensos), mas há um dado que diferencia o caso: marcada positividade dos autoanticorpos tireoidianos (anti-TPO muito elevado e anti-Tg elevado), associada a um padrão ultrassonográfico compatível com tireoidite crônica. TSH elevado + T4 livre reduzido + anticorpos positivos = hipotireoidismo autoimune compatível com Hashimoto.',
-      physio:'A tireoidite de Hashimoto é uma doença autoimune em que ocorre resposta imunológica contra componentes da tireoide, especialmente a tireoperoxidase e a tireoglobulina. A inflamação crônica leva progressivamente à lesão e destruição dos folículos tireoidianos, reduzindo a capacidade da glândula de produzir T4 e T3. Essa redução hormonal aumenta a secreção hipofisária de TSH, gerando o padrão observado. Vale notar: o consumo de soja, isoflavonas, selênio, zinco ou iodo não permite, sozinho, diagnosticar ou explicar a Hashimoto — são fatores dietéticos que interagem com a fisiologia tireoidiana, mas não substituem a avaliação clínica e laboratorial.',
+      physio:'A tireoidite de Hashimoto é uma doença autoimune em que ocorre resposta imunológica contra componentes da tireoide, especialmente a tireoperoxidase e a tireoglobulina. A inflamação crônica leva progressivamente à lesão e destruição dos folículos tireoidianos, reduzindo a capacidade da glândula de produzir T4 e T3. Essa redução hormonal aumenta a secreção hipofisária de TSH, gerando o padrão observado. Vale notar: o consumo de soja, isoflavonas, selênio, zinco ou iodo não permite, sozinho, diagnosticar ou explicar a Hashimoto, são fatores dietéticos que interagem com a fisiologia tireoidiana, mas não substituem a avaliação clínica e laboratorial.',
       qa:[
         q('tempo','sintomas','Há quanto tempo isso começou?','Isso vem acontecendo de forma progressiva há cerca de um ano.'),
         q('cansaco','sintomas','Como está sua disposição e energia?','Antes eu era bem ativa, hoje tenho dificuldade até pra dar conta das minhas atividades comuns. Sinto uma lentidão no corpo e na cabeça.'),
@@ -479,17 +479,17 @@
         q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Tenho dificuldade de concentração, sinto uma sensação de lentidão durante o dia.'),
         q('menstru','sintomas','Como estão os ciclos menstruais?','Meus ciclos menstruais ficaram mais longos e com mais fluxo que o normal.'),
         q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Não notei nenhum caroço no pescoço.'),
-        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Meu humor está estável, só me sinto mais desanimada por causa do cansaço.'),
+        q('humor','sintomas','Como está seu humor, notou irritabilidade ou ansiedade?','Meu humor está estável, só me sinto mais desanimada por causa do cansaço.'),
         q('atividade','habitos','Pratica atividade física?','Hoje faço atividade física só uma vez por semana. Antes eu caminhava ou corria três vezes por semana, mas parei por causa do cansaço.'),
         q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo e não bebo com frequência.'),
         q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Há uns dois anos passei a comer menos alimentos de origem animal, hoje minha alimentação é predominantemente vegetariana. Como arroz e feijão todo dia, frutas e verduras regularmente, aveia e outros cereais, castanha de vez em quando, ovo uma vez por semana e peixe raramente.'),
-        q('iodosoja','habitos','Consome sal iodado, soja, ou toma suplementos de selênio, zinco ou iodo?','Uso sal iodado em casa, mas como pouco alimento naturalmente rico em iodo. Consumo soja com uma certa frequência — tofu e bebida de soja umas 4 a 5 vezes por semana. Não tomo suplemento de selênio nem de zinco.'),
+        q('iodosoja','habitos','Consome sal iodado, soja, ou toma suplementos de selênio, zinco ou iodo?','Uso sal iodado em casa, mas como pouco alimento naturalmente rico em iodo. Consumo soja com uma certa frequência, tofu e bebida de soja umas 4 a 5 vezes por semana. Não tomo suplemento de selênio nem de zinco.'),
         q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento que eu saiba que interfira na tireoide.'),
         q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer com certeza sobre histórico familiar de doença de tireoide.'),
         q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho em escritório, minha rotina é bem sentada.'),
         q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu 15,6, bem acima do normal.'),
         q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 0,54, abaixo do normal.'),
-        q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','O anti-TPO deu maior que 600 e o anti-Tg deu 320 — os dois bem altos.'),
+        q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','O anti-TPO deu maior que 600 e o anti-Tg deu 320, os dois bem altos.'),
         q('colesterol','exames','O colesterol foi avaliado?','Meu LDL deu 168.'),
         q('ultrassom','exames','Já fez ultrassonografia da tireoide?','A ultrassonografia mostrou minha tireoide com volume discretamente reduzido, heterogênea e hipoecogênica. O médico disse que isso é compatível com uma tireoidite crônica.'),
       ],
@@ -500,10 +500,10 @@
       age:46,
       accent:'#B08628',
       complaint:'"Não estou me sentindo bem ultimamente."',
-      opening:'Oi, doutor(a). Vim porque percebi um caroço pequeno na frente do pescoço tomando banho. Não dói, mas às vezes sinto como se tivesse algo preso na garganta ao engolir coisas maiores.',
+      opening:'Então, estou preocupada porque percebi um caroço pequeno na frente do pescoço tomando banho. Não dói, mas às vezes sinto como se tivesse algo preso na garganta ao engolir coisas maiores.',
       correct:'cancer',
-      why:'Marina tem dois achados distintos que precisam ser avaliados separadamente. O primeiro é um hipotireoidismo subclínico (TSH discretamente elevado com T4 livre normal, sem anticorpos positivos, sem padrão ultrassonográfico de tireoidite) — uma alteração bioquímica discreta, não uma doença autoimune manifesta. O segundo, e o achado principal do caso, é um nódulo tireoidiano que evoluiu com características ultrassonográficas suspeitas (hipoecogenicidade, margens irregulares, microcalcificações) e foi confirmado por PAAF como Bethesda VI — carcinoma papilífero de tireoide. O diagnóstico não veio do TSH nem do pequeno crescimento do nódulo, e sim da avaliação de imagem e da citologia.',
-      physio:'No hipotireoidismo subclínico, a tireoide ainda mantém T4 livre normal, mas precisa de mais estímulo hipofisário, elevando o TSH. Já o carcinoma papilífero resulta da transformação neoplásica das células foliculares da tireoide, com alterações moleculares que promovem proliferação celular e sobrevivência anormal — as alterações nucleares vistas na PAAF (núcleos aumentados e sobrepostos, clareamento da cromatina, sulcos e inclusões nucleares) permitem o diagnóstico citológico. É importante não associar automaticamente o TSH elevado ao nódulo: são achados que coexistem no mesmo caso, mas devem ser avaliados de forma independente.',
+      why:'Marina tem dois achados distintos que precisam ser avaliados separadamente. O primeiro é um hipotireoidismo subclínico (TSH discretamente elevado com T4 livre normal, sem anticorpos positivos, sem padrão ultrassonográfico de tireoidite), uma alteração bioquímica discreta, não uma doença autoimune manifesta. O segundo, e o achado principal do caso, é um nódulo tireoidiano que evoluiu com características ultrassonográficas suspeitas (hipoecogenicidade, margens irregulares, microcalcificações) e foi confirmado por PAAF como Bethesda VI, carcinoma papilífero de tireoide. O diagnóstico não veio do TSH nem do pequeno crescimento do nódulo, e sim da avaliação de imagem e da citologia.',
+      physio:'No hipotireoidismo subclínico, a tireoide ainda mantém T4 livre normal, mas precisa de mais estímulo hipofisário, elevando o TSH. Já o carcinoma papilífero resulta da transformação neoplásica das células foliculares da tireoide, com alterações moleculares que promovem proliferação celular e sobrevivência anormal, as alterações nucleares vistas na PAAF (núcleos aumentados e sobrepostos, clareamento da cromatina, sulcos e inclusões nucleares) permitem o diagnóstico citológico. É importante não associar automaticamente o TSH elevado ao nódulo: são achados que coexistem no mesmo caso, mas devem ser avaliados de forma independente.',
       qa:[
         q('tempo','sintomas','Há quanto tempo isso começou?','Notei o nódulo há alguns meses e desde então tenho feito acompanhamento com exames de tempos em tempos, pra ver se ele muda.'),
         q('cansaco','sintomas','Como está sua disposição e energia?','Nos últimos meses tenho me sentido um pouco mais cansada, mas continuo fazendo minhas atividades normalmente.'),
@@ -519,7 +519,7 @@
         q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Não tenho notado dificuldade de concentração ou memória.'),
         q('menstru','sintomas','Como estão os ciclos menstruais?','Minha menstruação está normal.'),
         q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Percebi, durante o banho, um pequeno nódulo na parte da frente do pescoço, sem dor, mas às vezes sinto como se tivesse algo preso na garganta ao engolir alimentos maiores.'),
-        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Meu humor está bem, só um pouco preocupada com esse caroço.'),
+        q('humor','sintomas','Como está seu humor, notou irritabilidade ou ansiedade?','Meu humor está bem, só um pouco preocupada com esse caroço.'),
         q('atividade','habitos','Pratica atividade física?','Faço atividade física duas vezes por semana.'),
         q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo e não bebo com frequência.'),
         q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Minha alimentação é variada: arroz, feijão, carnes, ovos, leite e derivados, frutas e verduras regularmente. Como peixe umas duas vezes por semana e castanha ocasionalmente.'),
@@ -527,7 +527,7 @@
         q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento, nem nada pra tireoide.'),
         q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer com certeza sobre histórico familiar de doença de tireoide.'),
         q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho cerca de 8 horas por dia sentada.'),
-        q('tsh','exames','Você tem o resultado do TSH?','Fiz o TSH em duas ocasiões: na primeira vez deu 6,8, e seis meses depois deu 6,5 — os dois um pouco acima do normal.'),
+        q('tsh','exames','Você tem o resultado do TSH?','Fiz o TSH em duas ocasiões: na primeira vez deu 6,8, e seis meses depois deu 6,5, os dois um pouco acima do normal.'),
         q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre ficou dentro do normal nas duas vezes: 1,12 na primeira e 1,10 na segunda.'),
         q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','Os anticorpos anti-TPO e anti-Tg deram negativos nas duas vezes que repeti os exames.'),
         q('ultrassom','exames','Já fez ultrassonografia da tireoide?','Já fiz ultrassonografia da tireoide duas vezes. Na primeira, o nódulo media 0,9 cm, sólido, hipoecogênico, com margens relativamente regulares, sem sinais de invasão. Seis meses depois, repeti e o nódulo estava com 1,0 cm, com margens um pouco mais irregulares e uns pontinhos que o médico chamou de microcalcificações.'),
@@ -565,7 +565,7 @@
       const el = grid.querySelector(`[data-status="${p.id}"]`);
       const s = state[p.id];
       if(s.quizSubmitted){
-        el.textContent = s.quizSelected===p.correct ? 'Diagnóstico registrado — correto' : 'Diagnóstico registrado — revisar';
+        el.textContent = s.quizSelected===p.correct ? 'Diagnóstico registrado: correto' : 'Diagnóstico registrado: revisar';
       } else if(s.count>0){
         el.textContent = `${s.count}/${MAX_QUESTIONS} perguntas feitas`;
       } else {
