@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hospital Fictício Primeiros Cuidados</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F1F4F3;
+    --surface:#FFFFFF;
+    --surface-2:#E7EDEB;
+    --surface-3:#DCE7E4;
+    --text:#16221F;
+    --text-muted:#54655F;
+    --accent:#146B69;
+    --accent-ink:#0B4F4D;
+    --accent-soft:#DCEEEC;
+    --warn-bg:#FFF3D9;
+    --warn-text:#7A5300;
+    --warn-border:#E3A93B;
+    --border:#D7E0DE;
+    --shadow:0 1px 2px rgba(15,35,32,.06),0 6px 20px -8px rgba(15,35,32,.18);
+    --danger:#9C3B34;
+    --ok:#1E7A4C;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0D1513;
+      --surface:#16211F;
+      --surface-2:#1C2926;
+      --surface-3:#23322E;
+      --text:#E8F1EE;
+      --text-muted:#9BB2AC;
+      --accent:#57D8CC;
+      --accent-ink:#B6F0E9;
+      --accent-soft:#1B3835;
+      --warn-bg:#3A2C10;
+      --warn-text:#F2C879;
+      --warn-border:#805E1E;
+      --border:#28362F;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -10px rgba(0,0,0,.5);
+      --danger:#E38178;
+      --ok:#6FCB9A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0D1513;
+    --surface:#16211F;
+    --surface-2:#1C2926;
+    --surface-3:#23322E;
+    --text:#E8F1EE;
+    --text-muted:#9BB2AC;
+    --accent:#57D8CC;
+    --accent-ink:#B6F0E9;
+    --accent-soft:#1B3835;
+    --warn-bg:#3A2C10;
+    --warn-text:#F2C879;
+    --warn-border:#805E1E;
+    --border:#28362F;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px -10px rgba(0,0,0,.5);
+    --danger:#E38178;
+    --ok:#6FCB9A;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+    padding-inline:16px;
+    padding-block:20px 40px;
+    line-height:1.5;
+  }
+  h1,h2,h3,.display{
+    font-family:"Fraunces",Georgia,serif;
+    text-wrap:balance;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;}
+  .wrap{max-width:1000px;margin-inline:auto;}
+  button{font-family:inherit;cursor:pointer;}
+  button:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px;
+  }
+
+  /* ---------- header ---------- */
+  header.top{
+    display:flex;flex-direction:column;gap:6px;
+    margin-bottom:24px;
+  }
+  header.top .eyebrow{
+    font-size:12px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600;
+  }
+  header.top h1{font-size:clamp(28px,4vw,38px);margin:0;font-weight:600;}
+  header.top p{margin:2px 0 0;color:var(--text-muted);max-width:64ch;font-size:15px;}
+
+  /* ---------- patient grid ---------- */
+  #grid-view .grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;
+  }
+  .p-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow);
+    text-align:left;color:inherit;
+  }
+  .p-card .avatar{
+    width:48px;height:48px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:#fff;
+    flex-shrink:0;
+  }
+  .p-card .name-row{display:flex;align-items:center;gap:12px;}
+  .p-card .name-row .who{display:flex;flex-direction:column;}
+  .p-card .name-row .who b{font-size:17px;font-family:"Fraunces",serif;font-weight:600;}
+  .p-card .name-row .who span{font-size:13px;color:var(--text-muted);}
+  .p-card blockquote{
+    margin:0;font-style:italic;font-size:14.5px;
+    border-left:3px solid var(--card-accent,var(--accent));padding-left:10px;
+    color:var(--text-muted);
+  }
+  .p-card .status-line{font-size:12.5px;color:var(--text-muted);min-height:16px;}
+  .p-card .go{
+    margin-top:auto;background:var(--accent);color:#fff;border:none;border-radius:9px;
+    padding:10px 14px;font-weight:600;font-size:14px;text-align:center;
+  }
+  .p-card .go:hover{opacity:.92;}
+
+  .instructions{
+    background:var(--surface-2);border:1px solid var(--border);border-radius:12px;
+    padding:16px 18px;margin-bottom:22px;font-size:14px;color:var(--text-muted);
+  }
+  .instructions b{color:var(--text);}
+
+  /* ---------- case view ---------- */
+  #case-view{display:none;}
+  #case-view.active{display:block;}
+  #grid-view.hidden{display:none;}
+
+  .back-btn{
+    background:none;border:1px solid var(--border);color:var(--text);
+    border-radius:8px;padding:7px 12px;font-size:13.5px;font-weight:600;
+    display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;
+  }
+  .back-btn:hover{background:var(--surface-2);}
+
+  .case-layout{
+    display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start;
+  }
+  @media (max-width:760px){
+    .case-layout{grid-template-columns:1fr;}
+  }
+
+  .side-col{
+    display:flex;flex-direction:column;gap:14px;
+    position:sticky;top:16px;
+  }
+  @media (max-width:760px){ .side-col{position:static;} }
+
+  .patient-panel{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:18px;box-shadow:var(--shadow);
+  }
+  .patient-panel .head{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+  .patient-panel .avatar{
+    width:44px;height:44px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Fraunces",serif;font-weight:600;font-size:17px;color:#fff;
+  }
+  .patient-panel h2{font-size:19px;margin:0;font-weight:600;}
+  .patient-panel .head span{font-size:13px;color:var(--text-muted);}
+  .patient-panel p.quote{font-style:italic;color:var(--text-muted);font-size:14px;margin:8px 0 0;}
+  .counter-line{
+    margin-top:14px;padding-top:12px;border-top:1px dashed var(--border);
+    display:flex;align-items:center;justify-content:space-between;font-size:13px;
+  }
+  .counter-line .num{font-family:"JetBrains Mono",monospace;font-weight:600;color:var(--accent-ink);}
+  .meter{height:6px;border-radius:99px;background:var(--surface-3);overflow:hidden;margin-top:8px;}
+  .meter i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .25s ease;}
+
+  .quiz-panel{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:18px;box-shadow:var(--shadow);
+  }
+  .quiz-panel h3{font-size:15px;margin:0 0 4px;font-weight:600;}
+  .quiz-panel .sub{font-size:12.5px;color:var(--text-muted);margin:0 0 12px;}
+  .opt{
+    display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;
+    background:var(--surface-2);border:1px solid var(--border);border-radius:9px;
+    padding:9px 11px;font-size:13.5px;margin-bottom:7px;color:var(--text);
+  }
+  .opt:hover{border-color:var(--accent);}
+  .opt.selected{border-color:var(--accent);background:var(--accent-soft);font-weight:600;}
+  .opt input{margin-top:2px;accent-color:var(--accent);}
+  .quiz-submit{
+    width:100%;margin-top:6px;background:var(--accent);color:#fff;border:none;
+    border-radius:9px;padding:10px;font-weight:600;font-size:14px;
+  }
+  .quiz-submit:disabled{opacity:.5;cursor:not-allowed;}
+  .quiz-feedback{
+    margin-top:12px;border-radius:9px;padding:11px 12px;font-size:13.5px;line-height:1.5;
+  }
+  .quiz-feedback.correct{background:color-mix(in srgb, var(--ok) 15%, var(--surface));border:1px solid var(--ok);}
+  .quiz-feedback.wrong{background:color-mix(in srgb, var(--danger) 14%, var(--surface));border:1px solid var(--danger);}
+  .quiz-feedback b{display:block;margin-bottom:4px;}
+  .reveal-btn{
+    margin-top:10px;background:none;border:1px solid var(--border);color:var(--text);
+    border-radius:8px;padding:8px 10px;font-size:12.5px;font-weight:600;width:100%;
+  }
+  .explain-box{
+    margin-top:10px;font-size:13px;color:var(--text-muted);border-top:1px dashed var(--border);
+    padding-top:10px;
+  }
+  .explain-box h4{margin:10px 0 4px;font-size:12.5px;color:var(--text);text-transform:uppercase;letter-spacing:.05em;}
+  .explain-box h4:first-child{margin-top:0;}
+  .pw-gate{padding-top:2px;}
+  .pw-gate p{margin:0 0 8px;font-size:12.5px;color:var(--text-muted);}
+  .pw-row{display:flex;gap:6px;}
+  .pw-row input{
+    flex:1;border:1px solid var(--border);border-radius:8px;padding:8px 10px;
+    font-family:"JetBrains Mono",monospace;font-size:13px;background:var(--surface);color:var(--text);
+  }
+  .pw-row button{
+    background:var(--accent);color:#fff;border:none;border-radius:8px;padding:0 12px;
+    font-weight:600;font-size:12.5px;flex-shrink:0;
+  }
+  .pw-error{color:var(--danger);font-size:12px;margin-top:6px;}
+
+  /* ---------- chat ---------- */
+  .chat-col{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;
+    min-height:560px;max-height:82vh;
+  }
+  .chat-log{
+    flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;
+  }
+  .bubble{max-width:80%;padding:10px 13px;border-radius:13px;font-size:14.5px;line-height:1.5;}
+  .bubble.patient{
+    background:var(--surface-2);align-self:flex-start;border-bottom-left-radius:4px;
+  }
+  .bubble.student{
+    background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;
+  }
+  .bubble.system{
+    background:transparent;color:var(--text-muted);align-self:center;font-size:12.5px;
+    font-style:italic;text-align:center;max-width:90%;
+  }
+  .bubble .tag{
+    display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;
+    opacity:.65;margin-bottom:3px;font-weight:700;
+  }
+
+  .qbank{
+    border-top:1px solid var(--border);padding:14px;display:flex;flex-direction:column;
+    gap:12px;flex-shrink:0;max-height:46vh;overflow-y:auto;
+  }
+  .qtabs{display:flex;flex-wrap:wrap;gap:8px;}
+  .qtab{
+    display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+    background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
+    padding:8px 13px;font-size:13px;font-weight:600;color:var(--text);flex:1 1 auto;min-width:140px;
+  }
+  .qtab .qtab-count{font-weight:400;font-size:11.5px;color:var(--text-muted);}
+  .qtab:hover:not(:disabled){border-color:var(--accent);}
+  .qtab.active{border-color:var(--accent);background:var(--accent-soft);}
+  .qtab:disabled{opacity:.55;cursor:not-allowed;}
+  .qtab .qtab-lock{font-size:11px;color:var(--text-muted);font-weight:400;}
+  .qchips{display:flex;flex-wrap:wrap;gap:7px;}
+  .qchip{
+    background:var(--surface-2);border:1px solid var(--border);border-radius:99px;
+    padding:7px 13px;font-size:12.5px;color:var(--text);line-height:1.3;
+  }
+  .qchip:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft);}
+  .qchip:disabled{opacity:.4;text-decoration:line-through;cursor:not-allowed;}
+
+  .limit-note{
+    padding:10px 14px;font-size:12.5px;color:var(--text-muted);text-align:center;
+    border-top:1px solid var(--border);flex-shrink:0;
+  }
+
+  .case-actions{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .pdf-btn{
+    background:none;border:1px solid var(--border);color:var(--text);
+    border-radius:8px;padding:7px 12px;font-size:13.5px;font-weight:600;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .pdf-btn:hover{background:var(--surface-2);}
+
+  .print-only{display:none;}
+  @media print{
+    body *{visibility:hidden;}
+    #print-area, #print-area *{visibility:visible;}
+    #print-area{
+      display:block;position:absolute;top:0;left:0;width:100%;padding:0;
+      background:#fff;color:#111;font-family:"Source Sans 3",system-ui,sans-serif;
+    }
+    #print-area h1{font-family:"Fraunces",Georgia,serif;font-size:22px;margin:0 0 2px;}
+    #print-area h2{font-family:"Fraunces",Georgia,serif;font-size:17px;margin:18px 0 6px;}
+    #print-area .pr-meta{font-size:12.5px;color:#444;margin-bottom:14px;}
+    #print-area .pr-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;font-size:12.5px;margin-bottom:14px;}
+    #print-area .pr-grid div b{display:block;color:#666;font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;}
+    #print-area .pr-qa{margin-bottom:8px;font-size:12.5px;page-break-inside:avoid;}
+    #print-area .pr-q{font-weight:700;}
+    #print-area .pr-a{margin:2px 0 0;color:#222;}
+    #print-area .pr-diag{font-size:12.5px;margin-top:6px;}
+    #print-area hr{border:none;border-top:1px solid #ccc;margin:14px 0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow">Simulação de anamnese &middot; endocrinologia da tireoide</span>
+    <h1>Hospital Fictício Primeiros Cuidados</h1>
+    <p>Escolha perguntas de anamnese para reconstruir a história de cada paciente e decidir entre hipotireoidismo, hipertireoidismo (Graves), tireoidite de Hashimoto ou câncer de tireoide. Cada investigação tem no máximo <strong>10 perguntas</strong> — use-as com estratégia.</p>
+  </header>
+
+  <div id="grid-view">
+    <div class="instructions">
+      <b>Como investigar:</b> comece pelas perguntas de sintomas gerais. Depois de pelo menos 2 perguntas dessa categoria, hábitos e história é liberada; depois de mais 2 perguntas de hábitos, os exames são liberados. Cada pergunta conta para o limite de 10 e não pode ser repetida — pense antes de gastar suas perguntas.
+    </div>
+    <div class="grid" id="patient-grid"></div>
+  </div>
+
+  <div id="case-view">
+    <div class="case-actions">
+      <button class="back-btn" id="back-btn">&larr; Voltar aos casos</button>
+      <button class="pdf-btn" id="pdf-btn">&#128190; Salvar em PDF</button>
+    </div>
+    <div class="case-layout">
+      <div class="side-col">
+        <div class="patient-panel" id="patient-panel"></div>
+        <div class="quiz-panel" id="quiz-panel"></div>
+      </div>
+      <div class="chat-col">
+        <div class="chat-log" id="chat-log"></div>
+        <div class="qbank" id="qbank"></div>
+        <div class="limit-note" id="limit-note" hidden></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="print-area" class="print-only"></div>
+
+</div>
+
+<script>
+(function(){
+
+  const DIAGNOSIS_OPTIONS = [
+    { id:'hipo',   label:'Hipotireoidismo (não autoimune)' },
+    { id:'graves', label:'Hipertireoidismo — Doença de Graves' },
+    { id:'hashi',  label:'Tireoidite de Hashimoto' },
+    { id:'cancer', label:'Câncer de tireoide (carcinoma papilífero)' },
+  ];
+
+  const CATEGORIES = [
+    { id:'sintomas', label:'Sintomas gerais', unlockAfter:null,      unlockNote:null },
+    { id:'habitos',  label:'Hábitos e história', unlockAfter:'sintomas', unlockNeed:2 },
+    { id:'exames',   label:'Exames', unlockAfter:'habitos', unlockNeed:2 },
+  ];
+
+  const MAX_QUESTIONS = 10;
+  const EXPLAIN_PASSWORD = 'F1siopatologi@.2';
+
+  function q(key, category, label, answer){ return { key, category, label, answer }; }
+
+  const patients = [
+    {
+      id:'camila',
+      name:'Camila',
+      age:42,
+      accent:'#3D6B8C',
+      complaint:'"Não estou me sentindo bem ultimamente."',
+      opening:'Oi, doutor(a)... vim porque não estou me sentindo muito bem ultimamente. Isso começou há uns 10 meses e vem piorando aos poucos, já está atrapalhando até as coisas simples do meu dia a dia.',
+      correct:'hipo',
+      why:'Camila apresenta o conjunto clássico de manifestações de redução da atividade metabólica: fadiga, intolerância ao frio, ganho de peso, constipação, pele seca, queda de cabelo, dificuldade de concentração e redução da disposição física. O TSH elevado (9,8) associado ao T4 livre reduzido (0,68) confirma hipotireoidismo manifesto. A ausência de elevação de anti-TPO e anti-Tg, junto com uma ultrassonografia sem sinais de tireoidite, torna Hashimoto pouco provável — por isso o quadro é classificado como hipotireoidismo primário não autoimune.',
+      physio:'Na redução da produção de T4 e T3, ocorre menor estímulo do metabolismo celular, o que reduz o gasto energético, a termogênese e diversas funções fisiológicas — daí o cansaço, a intolerância ao frio, a constipação e o ganho de peso. A menor ação dos hormônios tireoidianos também reduz mecanismos do metabolismo lipídico, favorecendo a elevação do LDL-colesterol.',
+      qa:[
+        q('tempo','sintomas','Há quanto tempo isso começou?','Isso começou há uns 10 meses. No início achei que era só o corre-corre do trabalho, mas hoje atrapalha até as coisas simples do meu dia a dia.'),
+        q('cansaco','sintomas','Como está sua disposição e energia?','Sinto um cansaço que não passa. Antes eu tinha disposição pra tudo, hoje faço minhas tarefas com muito mais esforço.'),
+        q('peso','sintomas','Notou alguma mudança de peso?','Ganhei cerca de 8 kg no último ano. E olha que não sinto que estou comendo muito mais do que antes.'),
+        q('apetite','sintomas','Como está seu apetite?','Não notei um aumento importante na quantidade que eu como.'),
+        q('friocalor','sintomas','Sente mais frio ou mais calor que o normal?','Sinto muito frio, às vezes mais que as pessoas ao meu redor, mesmo em lugares onde ninguém reclama de frio.'),
+        q('sono','sintomas','Como está o sono?','Durmo umas 7 horas por noite, mas mesmo assim acordo cansada, e sinto sono durante o dia.'),
+        q('palpitacoes','sintomas','Sente palpitações ou o coração acelerado?','Não, meu coração não fica acelerado nem sinto palpitações.'),
+        q('tremor','sintomas','Tem notado tremores?','Não, não tenho tremores nas mãos.'),
+        q('sudorese','sintomas','Tem transpirado mais que o normal?','Não, não sinto suor excessivo.'),
+        q('intestino','sintomas','Como está o funcionamento do intestino?','Estou com prisão de ventre, isso é meio novo pra mim.'),
+        q('pelecabelo','sintomas','Notou mudanças na pele, cabelo ou unhas?','Minha pele ficou mais seca, meu cabelo tem caído mais que o normal, e minhas unhas ficaram fracas, quebram fácil.'),
+        q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Tenho tido dificuldade pra me concentrar no trabalho, parece que minha cabeça está mais devagar.'),
+        q('menstru','sintomas','Como estão os ciclos menstruais?','Minha menstruação continua normal, sem mudanças que eu tenha notado.'),
+        q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Não notei nenhum caroço nem nada diferente no meu pescoço.'),
+        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Meu humor está bem estável, não sinto irritabilidade fora do normal — só o cansaço mesmo.'),
+        q('atividade','habitos','Pratica atividade física?','Trabalho cerca de 8 horas por dia sentada e hoje não faço atividade física regular. Antes eu caminhava, mas parei porque não tenho mais disposição.'),
+        q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo e não bebo com frequência.'),
+        q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Minha alimentação é meio monótona. No café da manhã tomo café com pão branco. No almoço, arroz, feijão, carne e pouco vegetal. Fruta como de vez em quando. Como peixe cerca de uma vez por semana e ovos umas 2 a 3 vezes na semana. Não sigo nenhuma dieta restritiva nem tomo suplemento.'),
+        q('iodosoja','habitos','Consome sal iodado, soja, ou toma suplementos de selênio, zinco ou iodo?','Uso sal iodado em casa e como leite e ovos, mas em quantidade variável. Não consumo soja com frequência nem tomo suplementos de selênio, zinco ou iodo.'),
+        q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento contínuo, nem nada pra tireoide.'),
+        q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer com certeza, nunca conversei muito sobre isso na minha família.'),
+        q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho cerca de 8 horas por dia sentada, num escritório.'),
+        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu 9,8 (o valor de referência é até 4,0).'),
+        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 0,68 (o valor de referência é a partir de 0,8).'),
+        q('t3','exames','Você tem o resultado do T3 livre?','O T3 livre deu 2,3.'),
+        q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','Os anticorpos anti-TPO e anti-Tg deram negativos.'),
+        q('colesterol','exames','O colesterol foi avaliado?','Meu colesterol total deu 242 e o LDL deu 161.'),
+        q('hemoglobina','exames','Foi feito hemograma? Como está a hemoglobina?','Minha hemoglobina deu 12,1.'),
+        q('ultrassom','exames','Já fez ultrassonografia da tireoide?','Fiz uma ultrassonografia da tireoide: o volume está discretamente reduzido, sem nódulos nem alterações focais.'),
+      ],
+    },
+    {
+      id:'juliana',
+      name:'Juliana',
+      age:29,
+      accent:'#C05746',
+      complaint:'"Não estou me sentindo bem ultimamente."',
+      opening:'Oi! Vim porque não estou me sentindo bem ultimamente. Isso começou há uns 4 meses, e nas últimas semanas notei umas mudanças no meu corpo que me deixaram preocupada.',
+      correct:'graves',
+      why:'O quadro de Juliana é de hipermetabolismo: perda de peso apesar do aumento do apetite, intolerância ao calor, sudorese, taquicardia, palpitações, tremor, insônia, aumento do trânsito intestinal e irritabilidade. O padrão laboratorial confirma hipertireoidismo primário (TSH muito baixo com T4 e T3 elevados), e a positividade do TRAb aponta especificamente para doença de Graves.',
+      physio:'Na doença de Graves, autoanticorpos contra o receptor de TSH (TRAb) estimulam continuamente esse receptor, levando a tireoide a produzir e liberar quantidades excessivas de T4 e T3. O excesso de hormônios tireoidianos aumenta o metabolismo energético, a produção de calor e potencializa a resposta às catecolaminas — por isso surgem taquicardia, tremor, sudorese, ansiedade, intolerância ao calor e perda de peso.',
+      qa:[
+        q('tempo','sintomas','Há quanto tempo isso começou?','Isso começou há cerca de 4 meses.'),
+        q('cansaco','sintomas','Como está sua disposição e energia?','Sinto que estou com muita energia, quase agitada, mas ao mesmo tempo as palpitações atrapalham quando tento fazer esforço físico.'),
+        q('peso','sintomas','Notou alguma mudança de peso?','Perdi uns 6 kg nos últimos três meses sem nem tentar emagrecer, e olha que estou comendo praticamente igual, ou até mais.'),
+        q('apetite','sintomas','Como está seu apetite?','Ultimamente sinto muita fome, comecei a comer mais por conta própria.'),
+        q('friocalor','sintomas','Sente mais frio ou mais calor que o normal?','Sinto muito calor, mesmo em lugar com ar-condicionado.'),
+        q('sono','sintomas','Como está o sono?','Durmo só umas 5 horas por noite, tenho dificuldade pra pegar no sono.'),
+        q('palpitacoes','sintomas','Sente palpitações ou o coração acelerado?','Sinto palpitações frequentes, principalmente quando estou em repouso, parada mesmo.'),
+        q('tremor','sintomas','Tem notado tremores?','Nas últimas semanas percebi um tremor fino nas mãos.'),
+        q('sudorese','sintomas','Tem transpirado mais que o normal?','Transpiro bem mais que o normal, mesmo sem fazer esforço.'),
+        q('intestino','sintomas','Como está o funcionamento do intestino?','Minhas evacuações aumentaram, passei de uma por dia pra 3 ou 4 por dia.'),
+        q('pelecabelo','sintomas','Notou mudanças na pele, cabelo ou unhas?','Não notei queda de cabelo, mas percebi que minha pele está mais quente e úmida que o normal.'),
+        q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Não tenho notado problema de concentração ou memória, só ansiedade mesmo.'),
+        q('menstru','sintomas','Como estão os ciclos menstruais?','Não notei mudança na minha menstruação.'),
+        q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Notei que meu pescoço parece um pouco mais inchado, mas não senti nenhum caroço.'),
+        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Tenho estado mais irritada e ansiosa que o normal.'),
+        q('atividade','habitos','Pratica atividade física?','Eu corria três vezes por semana, mas parei porque as palpitações atrapalham.'),
+        q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo. Tomo de duas a três xícaras de café por dia e às vezes bebida energética. Não bebo álcool com frequência.'),
+        q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Aumentei a quantidade que como porque sinto muita fome. Como carne, ovos e leite regularmente, peixe umas duas vezes por semana e castanha de vez em quando.'),
+        q('iodosoja','habitos','Consome sal iodado, soja, ou toma suplementos de selênio, zinco ou iodo?','Como soja esporadicamente e não tomo suplemento de selênio, zinco ou iodo.'),
+        q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento contínuo.'),
+        q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer, nunca conversei muito sobre isso com a família.'),
+        q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho durante o dia e estudo à noite, a rotina é bem corrida.'),
+        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu menor que 0,01, bem abaixo do normal (referência 0,4 a 4,0).'),
+        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 3,1, bem acima do normal.'),
+        q('t3','exames','Você tem o resultado do T3 livre?','O T3 livre deu 8,2, bem acima do normal.'),
+        q('anticorpos','exames','Os anticorpos da tireoide (TRAb, anti-TPO) foram pedidos?','O TRAb deu positivo, e o anti-TPO também deu positivo.'),
+        q('ultrassom','exames','Já fez ultrassonografia da tireoide?','A ultrassonografia mostrou minha tireoide discretamente aumentada, sem nódulos palpáveis.'),
+        q('vitais','exames','Como estão seus sinais vitais (frequência cardíaca, pressão, temperatura)?','No consultório mediram e minha frequência cardíaca deu 112 batimentos por minuto, a pressão ficou 138 por 68, e a temperatura estava em 37,4. Também repararam que meus reflexos estão mais rápidos que o normal.'),
+      ],
+    },
+    {
+      id:'carolina',
+      name:'Carolina',
+      age:35,
+      accent:'#6B5B95',
+      complaint:'"Não estou me sentindo bem ultimamente."',
+      opening:'Olá... venho me sentindo muito cansada há quase um ano. Sinto muito frio, tenho prisão de ventre, e não consigo mais emagrecer como antes, mesmo tentando.',
+      correct:'hashi',
+      why:'Carolina tem manifestações típicas de hipotireoidismo (fadiga, intolerância ao frio, ganho de peso, constipação, pele seca, queda de cabelo, ciclos menstruais mais longos e intensos), mas há um dado que diferencia o caso: marcada positividade dos autoanticorpos tireoidianos (anti-TPO muito elevado e anti-Tg elevado), associada a um padrão ultrassonográfico compatível com tireoidite crônica. TSH elevado + T4 livre reduzido + anticorpos positivos = hipotireoidismo autoimune compatível com Hashimoto.',
+      physio:'A tireoidite de Hashimoto é uma doença autoimune em que ocorre resposta imunológica contra componentes da tireoide, especialmente a tireoperoxidase e a tireoglobulina. A inflamação crônica leva progressivamente à lesão e destruição dos folículos tireoidianos, reduzindo a capacidade da glândula de produzir T4 e T3. Essa redução hormonal aumenta a secreção hipofisária de TSH, gerando o padrão observado. Vale notar: o consumo de soja, isoflavonas, selênio, zinco ou iodo não permite, sozinho, diagnosticar ou explicar a Hashimoto — são fatores dietéticos que interagem com a fisiologia tireoidiana, mas não substituem a avaliação clínica e laboratorial.',
+      qa:[
+        q('tempo','sintomas','Há quanto tempo isso começou?','Isso vem acontecendo de forma progressiva há cerca de um ano.'),
+        q('cansaco','sintomas','Como está sua disposição e energia?','Antes eu era bem ativa, hoje tenho dificuldade até pra dar conta das minhas atividades comuns. Sinto uma lentidão no corpo e na cabeça.'),
+        q('peso','sintomas','Notou alguma mudança de peso?','Ganhei cerca de 6 kg nos últimos meses, e tenho dificuldade pra emagrecer mesmo tentando.'),
+        q('apetite','sintomas','Como está seu apetite?','Meu apetite está normal, não mudou muito.'),
+        q('friocalor','sintomas','Sente mais frio ou mais calor que o normal?','Sinto muita intolerância ao frio.'),
+        q('sono','sintomas','Como está o sono?','Durmo cerca de 8 horas, mas acordo sem sensação de descanso.'),
+        q('palpitacoes','sintomas','Sente palpitações ou o coração acelerado?','Não, não sinto palpitações.'),
+        q('tremor','sintomas','Tem notado tremores?','Não, não sinto tremores.'),
+        q('sudorese','sintomas','Tem transpirado mais que o normal?','Não, não transpiro mais que o normal.'),
+        q('intestino','sintomas','Como está o funcionamento do intestino?','Estou com prisão de ventre.'),
+        q('pelecabelo','sintomas','Notou mudanças na pele, cabelo ou unhas?','Minha pele ficou mais seca e notei queda de cabelo também.'),
+        q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Tenho dificuldade de concentração, sinto uma sensação de lentidão durante o dia.'),
+        q('menstru','sintomas','Como estão os ciclos menstruais?','Meus ciclos menstruais ficaram mais longos e com mais fluxo que o normal.'),
+        q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Não notei nenhum caroço no pescoço.'),
+        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Meu humor está estável, só me sinto mais desanimada por causa do cansaço.'),
+        q('atividade','habitos','Pratica atividade física?','Hoje faço atividade física só uma vez por semana. Antes eu caminhava ou corria três vezes por semana, mas parei por causa do cansaço.'),
+        q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo e não bebo com frequência.'),
+        q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Há uns dois anos passei a comer menos alimentos de origem animal, hoje minha alimentação é predominantemente vegetariana. Como arroz e feijão todo dia, frutas e verduras regularmente, aveia e outros cereais, castanha de vez em quando, ovo uma vez por semana e peixe raramente.'),
+        q('iodosoja','habitos','Consome sal iodado, soja, ou toma suplementos de selênio, zinco ou iodo?','Uso sal iodado em casa, mas como pouco alimento naturalmente rico em iodo. Consumo soja com uma certa frequência — tofu e bebida de soja umas 4 a 5 vezes por semana. Não tomo suplemento de selênio nem de zinco.'),
+        q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento que eu saiba que interfira na tireoide.'),
+        q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer com certeza sobre histórico familiar de doença de tireoide.'),
+        q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho em escritório, minha rotina é bem sentada.'),
+        q('tsh','exames','Você tem o resultado do TSH?','Meu TSH deu 15,6, bem acima do normal.'),
+        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre deu 0,54, abaixo do normal.'),
+        q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','O anti-TPO deu maior que 600 e o anti-Tg deu 320 — os dois bem altos.'),
+        q('colesterol','exames','O colesterol foi avaliado?','Meu LDL deu 168.'),
+        q('ultrassom','exames','Já fez ultrassonografia da tireoide?','A ultrassonografia mostrou minha tireoide com volume discretamente reduzido, heterogênea e hipoecogênica. O médico disse que isso é compatível com uma tireoidite crônica.'),
+      ],
+    },
+    {
+      id:'marina',
+      name:'Marina',
+      age:46,
+      accent:'#B08628',
+      complaint:'"Não estou me sentindo bem ultimamente."',
+      opening:'Oi, doutor(a). Vim porque percebi um caroço pequeno na frente do pescoço tomando banho. Não dói, mas às vezes sinto como se tivesse algo preso na garganta ao engolir coisas maiores.',
+      correct:'cancer',
+      why:'Marina tem dois achados distintos que precisam ser avaliados separadamente. O primeiro é um hipotireoidismo subclínico (TSH discretamente elevado com T4 livre normal, sem anticorpos positivos, sem padrão ultrassonográfico de tireoidite) — uma alteração bioquímica discreta, não uma doença autoimune manifesta. O segundo, e o achado principal do caso, é um nódulo tireoidiano que evoluiu com características ultrassonográficas suspeitas (hipoecogenicidade, margens irregulares, microcalcificações) e foi confirmado por PAAF como Bethesda VI — carcinoma papilífero de tireoide. O diagnóstico não veio do TSH nem do pequeno crescimento do nódulo, e sim da avaliação de imagem e da citologia.',
+      physio:'No hipotireoidismo subclínico, a tireoide ainda mantém T4 livre normal, mas precisa de mais estímulo hipofisário, elevando o TSH. Já o carcinoma papilífero resulta da transformação neoplásica das células foliculares da tireoide, com alterações moleculares que promovem proliferação celular e sobrevivência anormal — as alterações nucleares vistas na PAAF (núcleos aumentados e sobrepostos, clareamento da cromatina, sulcos e inclusões nucleares) permitem o diagnóstico citológico. É importante não associar automaticamente o TSH elevado ao nódulo: são achados que coexistem no mesmo caso, mas devem ser avaliados de forma independente.',
+      qa:[
+        q('tempo','sintomas','Há quanto tempo isso começou?','Notei o nódulo há alguns meses e desde então tenho feito acompanhamento com exames de tempos em tempos, pra ver se ele muda.'),
+        q('cansaco','sintomas','Como está sua disposição e energia?','Nos últimos meses tenho me sentido um pouco mais cansada, mas continuo fazendo minhas atividades normalmente.'),
+        q('peso','sintomas','Notou alguma mudança de peso?','Ganhei cerca de 2 kg no último ano, sem mudar muito minha alimentação.'),
+        q('apetite','sintomas','Como está seu apetite?','Meu apetite está normal.'),
+        q('friocalor','sintomas','Sente mais frio ou mais calor que o normal?','De vez em quando sinto frio mais fácil que as outras pessoas, mas nada muito intenso.'),
+        q('sono','sintomas','Como está o sono?','Durmo cerca de 7 horas por noite e não sinto sonolência excessiva.'),
+        q('palpitacoes','sintomas','Sente palpitações ou o coração acelerado?','Não sinto palpitações.'),
+        q('tremor','sintomas','Tem notado tremores?','Não sinto tremores.'),
+        q('sudorese','sintomas','Tem transpirado mais que o normal?','Não sinto suor excessivo.'),
+        q('intestino','sintomas','Como está o funcionamento do intestino?','Não tenho prisão de ventre importante.'),
+        q('pelecabelo','sintomas','Notou mudanças na pele, cabelo ou unhas?','Não notei mudanças importantes na pele, no cabelo ou nas unhas.'),
+        q('concentracao','sintomas','Tem notado dificuldade de concentração ou memória?','Não tenho notado dificuldade de concentração ou memória.'),
+        q('menstru','sintomas','Como estão os ciclos menstruais?','Minha menstruação está normal.'),
+        q('pescoco','sintomas','Notou algum caroço no pescoço ou dificuldade para engolir?','Percebi, durante o banho, um pequeno nódulo na parte da frente do pescoço, sem dor, mas às vezes sinto como se tivesse algo preso na garganta ao engolir alimentos maiores.'),
+        q('humor','sintomas','Como está seu humor — notou irritabilidade ou ansiedade?','Meu humor está bem, só um pouco preocupada com esse caroço.'),
+        q('atividade','habitos','Pratica atividade física?','Faço atividade física duas vezes por semana.'),
+        q('vicios','habitos','Fuma, bebe álcool ou consome café/energéticos?','Não fumo e não bebo com frequência.'),
+        q('alimentacao','habitos','Como é sua alimentação no dia a dia?','Minha alimentação é variada: arroz, feijão, carnes, ovos, leite e derivados, frutas e verduras regularmente. Como peixe umas duas vezes por semana e castanha ocasionalmente.'),
+        q('iodosoja','habitos','Consome sal iodado, soja, ou toma suplementos de selênio, zinco ou iodo?','Uso sal iodado no preparo das refeições e como alimentos à base de soja, como tofu e bebida de soja, umas duas vezes por semana. Não uso suplemento de selênio, zinco ou iodo.'),
+        q('medicamento','habitos','Usa algum medicamento?','Não uso nenhum medicamento, nem nada pra tireoide.'),
+        q('familia','habitos','Tem histórico familiar de doença de tireoide?','Não sei te dizer com certeza sobre histórico familiar de doença de tireoide.'),
+        q('trabalho','habitos','Como é sua rotina de trabalho?','Trabalho cerca de 8 horas por dia sentada.'),
+        q('tsh','exames','Você tem o resultado do TSH?','Fiz o TSH em duas ocasiões: na primeira vez deu 6,8, e seis meses depois deu 6,5 — os dois um pouco acima do normal.'),
+        q('t4','exames','Você tem o resultado do T4 livre?','O T4 livre ficou dentro do normal nas duas vezes: 1,12 na primeira e 1,10 na segunda.'),
+        q('anticorpos','exames','Os anticorpos da tireoide (anti-TPO e anti-Tg) foram pedidos?','Os anticorpos anti-TPO e anti-Tg deram negativos nas duas vezes que repeti os exames.'),
+        q('ultrassom','exames','Já fez ultrassonografia da tireoide?','Já fiz ultrassonografia da tireoide duas vezes. Na primeira, o nódulo media 0,9 cm, sólido, hipoecogênico, com margens relativamente regulares, sem sinais de invasão. Seis meses depois, repeti e o nódulo estava com 1,0 cm, com margens um pouco mais irregulares e uns pontinhos que o médico chamou de microcalcificações.'),
+        q('paaf','exames','Fez alguma punção ou biópsia da tireoide?','Como o nódulo passou a ter características suspeitas na ultrassonografia, o médico pediu uma punção com agulha fina. O resultado veio como Bethesda VI, que ele me explicou ser compatível com um carcinoma papilífero de tireoide.'),
+      ],
+    },
+  ];
+
+  const state = {};
+  patients.forEach(p=>{
+    state[p.id] = { count:0, log:[{type:'patient', text:p.opening}], asked:new Set(), openCategory:'sintomas', quizSelected:null, quizSubmitted:false, explainOpen:false, explainUnlocked:false, explainError:false, startedAt:null, finishedAt:null };
+  });
+  let currentId = null;
+
+  const grid = document.getElementById('patient-grid');
+  patients.forEach(p=>{
+    const card = document.createElement('button');
+    card.className = 'p-card';
+    card.style.setProperty('--card-accent', p.accent);
+    card.innerHTML = `
+      <div class="name-row">
+        <div class="avatar" style="background:${p.accent}">${p.name[0]}</div>
+        <div class="who"><b>${p.name}</b><span>${p.age} anos</span></div>
+      </div>
+      <blockquote>${p.complaint}</blockquote>
+      <div class="status-line" data-status="${p.id}"></div>
+      <span class="go">Iniciar investigação</span>
+    `;
+    card.addEventListener('click', ()=> openCase(p.id));
+    grid.appendChild(card);
+  });
+
+  function refreshGridStatus(){
+    patients.forEach(p=>{
+      const el = grid.querySelector(`[data-status="${p.id}"]`);
+      const s = state[p.id];
+      if(s.quizSubmitted){
+        el.textContent = s.quizSelected===p.correct ? 'Diagnóstico registrado — correto' : 'Diagnóstico registrado — revisar';
+      } else if(s.count>0){
+        el.textContent = `${s.count}/${MAX_QUESTIONS} perguntas feitas`;
+      } else {
+        el.textContent = 'Ainda não investigado';
+      }
+    });
+  }
+  refreshGridStatus();
+
+  const gridView = document.getElementById('grid-view');
+  const caseView = document.getElementById('case-view');
+  const backBtn = document.getElementById('back-btn');
+  const chatLog = document.getElementById('chat-log');
+  const qbank = document.getElementById('qbank');
+  const limitNote = document.getElementById('limit-note');
+  const patientPanel = document.getElementById('patient-panel');
+  const quizPanel = document.getElementById('quiz-panel');
+
+  backBtn.addEventListener('click', ()=>{
+    caseView.classList.remove('active');
+    gridView.classList.remove('hidden');
+    refreshGridStatus();
+    currentId = null;
+  });
+
+  function openCase(id){
+    currentId = id;
+    const s = state[id];
+    if(!s.startedAt) s.startedAt = new Date();
+    gridView.classList.add('hidden');
+    caseView.classList.add('active');
+    renderPanel();
+    renderQuiz();
+    renderChat();
+    renderQBank();
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+  }
+
+  function currentPatient(){ return patients.find(p=>p.id===currentId); }
+
+  function renderPanel(){
+    const p = currentPatient();
+    const s = state[p.id];
+    const pct = Math.min(100, Math.round((s.count/MAX_QUESTIONS)*100));
+    patientPanel.innerHTML = `
+      <div class="head">
+        <div class="avatar" style="background:${p.accent}">${p.name[0]}</div>
+        <div>
+          <h2>${p.name}</h2>
+          <span>${p.age} anos</span>
+        </div>
+      </div>
+      <p class="quote">${p.complaint}</p>
+      <div class="counter-line">
+        <span>Perguntas usadas</span>
+        <span class="num">${s.count}/${MAX_QUESTIONS}</span>
+      </div>
+      <div class="meter"><i style="width:${pct}%"></i></div>
+    `;
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function fmtDateTime(d){
+    if(!d) return '—';
+    return d.toLocaleString('pt-BR', {
+      timeZone:'America/Sao_Paulo', day:'2-digit', month:'2-digit', year:'numeric',
+      hour:'2-digit', minute:'2-digit', second:'2-digit'
+    });
+  }
+
+  function fmtDuration(start, end){
+    if(!start || !end) return '—';
+    const totalSec = Math.max(0, Math.round((end-start)/1000));
+    const m = Math.floor(totalSec/60);
+    const sec = totalSec%60;
+    return `${m} min ${sec}s`;
+  }
+
+  const printArea = document.getElementById('print-area');
+  const pdfBtn = document.getElementById('pdf-btn');
+
+  function buildPrintReport(){
+    const p = currentPatient();
+    const s = state[p.id];
+    const diagLabel = s.quizSelected ? DIAGNOSIS_OPTIONS.find(o=>o.id===s.quizSelected).label : '—';
+    const correctLabel = DIAGNOSIS_OPTIONS.find(o=>o.id===p.correct).label;
+    const isCorrect = s.quizSubmitted && s.quizSelected === p.correct;
+
+    const qaRows = s.log.filter(m=>m.type==='student' || m.type==='patient');
+    let qaHtml = '';
+    for(let i=0;i<qaRows.length;i+=2){
+      const question = qaRows[i];
+      const answer = qaRows[i+1];
+      if(!question) continue;
+      qaHtml += `<div class="pr-qa">
+        <div class="pr-q">P: ${escapeHtml(question.text)}</div>
+        <div class="pr-a">${p.name}: ${escapeHtml(answer ? answer.text : '')}</div>
+      </div>`;
+    }
+
+    printArea.innerHTML = `
+      <h1>Hospital Fictício Primeiros Cuidados</h1>
+      <div class="pr-meta">Registro de investigação clínica &middot; relatório gerado em ${fmtDateTime(new Date())}</div>
+      <div class="pr-grid">
+        <div><b>Paciente</b>${escapeHtml(p.name)}, ${p.age} anos</div>
+        <div><b>Perguntas utilizadas</b>${s.count}/${MAX_QUESTIONS}</div>
+        <div><b>Início da investigação</b>${fmtDateTime(s.startedAt)}</div>
+        <div><b>Registro do diagnóstico</b>${fmtDateTime(s.finishedAt)}</div>
+        <div><b>Duração total</b>${fmtDuration(s.startedAt, s.finishedAt)}</div>
+        <div><b>Status</b>${s.quizSubmitted ? (isCorrect ? 'Diagnóstico correto' : 'Diagnóstico a revisar') : 'Investigação em andamento'}</div>
+      </div>
+      <div class="pr-diag">
+        <b>Hipótese registrada pelo aluno:</b> ${escapeHtml(diagLabel)}<br>
+        <b>Diagnóstico correto do caso:</b> ${escapeHtml(correctLabel)}
+      </div>
+      <hr>
+      <h2>Transcrição da anamnese</h2>
+      ${qaHtml || '<p>Nenhuma pergunta realizada ainda.</p>'}
+    `;
+  }
+
+  pdfBtn.addEventListener('click', ()=>{
+    buildPrintReport();
+    window.print();
+  });
+
+  function renderChat(){
+    const p = currentPatient();
+    const s = state[p.id];
+    chatLog.innerHTML = '';
+    s.log.forEach(msg=>{
+      const b = document.createElement('div');
+      if(msg.type==='patient'){
+        b.className = 'bubble patient';
+        b.innerHTML = `<span class="tag">${p.name}</span>${escapeHtml(msg.text)}`;
+      } else if(msg.type==='student'){
+        b.className = 'bubble student';
+        b.innerHTML = `<span class="tag">Você</span>${escapeHtml(msg.text)}`;
+      } else {
+        b.className = 'bubble system';
+        b.textContent = msg.text;
+      }
+      chatLog.appendChild(b);
+    });
+    chatLog.scrollTop = chatLog.scrollHeight;
+
+    const locked = s.count >= MAX_QUESTIONS;
+    limitNote.hidden = !locked;
+    if(locked){
+      limitNote.textContent = 'Limite de 10 perguntas atingido. Registre sua hipótese diagnóstica ao lado.';
+    }
+  }
+
+  // returns how many questions have been asked within a given category, for a given patient
+  function countAsked(p, s, catId){
+    let n = 0;
+    p.qa.forEach(entry=>{
+      if(entry.category===catId && s.asked.has(entry.key)) n++;
+    });
+    return n;
+  }
+
+  function isCategoryUnlocked(p, s, cat){
+    if(!cat.unlockAfter) return true;
+    return countAsked(p, s, cat.unlockAfter) >= cat.unlockNeed;
+  }
+
+  function renderQBank(){
+    const p = currentPatient();
+    const s = state[p.id];
+    const locked = s.count >= MAX_QUESTIONS;
+    qbank.innerHTML = '';
+
+    const availableCats = CATEGORIES.filter(cat=> p.qa.some(e=>e.category===cat.id));
+
+    const tabs = document.createElement('div');
+    tabs.className = 'qtabs';
+    availableCats.forEach(cat=>{
+      const unlocked = isCategoryUnlocked(p, s, cat);
+      const total = p.qa.filter(e=>e.category===cat.id).length;
+      const askedN = countAsked(p, s, cat.id);
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'qtab' + (s.openCategory===cat.id && unlocked ? ' active' : '');
+      btn.disabled = !unlocked;
+      if(unlocked){
+        btn.innerHTML = `${cat.label}<span class="qtab-count">${askedN}/${total} perguntadas · toque para ver</span>`;
+        btn.addEventListener('click', ()=>{
+          s.openCategory = (s.openCategory===cat.id) ? null : cat.id;
+          renderQBank();
+        });
+      } else {
+        const catLabel = CATEGORIES.find(c=>c.id===cat.unlockAfter).label;
+        btn.innerHTML = `🔒 ${cat.label}<span class="qtab-lock">libera após ${cat.unlockNeed} perguntas de ${catLabel.toLowerCase()}</span>`;
+      }
+      tabs.appendChild(btn);
+    });
+    qbank.appendChild(tabs);
+
+    const openCat = availableCats.find(c=>c.id===s.openCategory && isCategoryUnlocked(p,s,c));
+    if(openCat){
+      const items = p.qa.filter(entry=>entry.category===openCat.id);
+      const chips = document.createElement('div');
+      chips.className = 'qchips';
+      items.forEach(entry=>{
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'qchip';
+        btn.textContent = entry.label;
+        const alreadyAsked = s.asked.has(entry.key);
+        btn.disabled = alreadyAsked || locked;
+        btn.addEventListener('click', ()=> askEntry(entry));
+        chips.appendChild(btn);
+      });
+      qbank.appendChild(chips);
+    }
+  }
+
+  function askEntry(entry){
+    const p = currentPatient();
+    const s = state[p.id];
+    if(s.count >= MAX_QUESTIONS || s.asked.has(entry.key)) return;
+
+    const beforeUnlocked = {};
+    CATEGORIES.forEach(cat=>{ beforeUnlocked[cat.id] = isCategoryUnlocked(p, s, cat); });
+
+    s.count++;
+    s.asked.add(entry.key);
+    s.log.push({type:'student', text: entry.label});
+    s.log.push({type:'patient', text: entry.answer});
+
+    CATEGORIES.forEach(cat=>{
+      if(!beforeUnlocked[cat.id] && isCategoryUnlocked(p, s, cat)){
+        s.log.push({type:'system', text:`Novas perguntas liberadas: ${cat.label}.`});
+        s.openCategory = cat.id;
+      }
+    });
+
+    if(s.count >= MAX_QUESTIONS){
+      s.log.push({type:'system', text:'Você atingiu o limite de 10 perguntas nesta investigação.'});
+    }
+
+    renderPanel();
+    renderChat();
+    renderQBank();
+  }
+
+  function renderQuiz(){
+    const p = currentPatient();
+    const s = state[p.id];
+    let optsHtml = DIAGNOSIS_OPTIONS.map(o=>`
+      <label class="opt ${s.quizSelected===o.id?'selected':''}" data-opt="${o.id}">
+        <input type="radio" name="diag" value="${o.id}" ${s.quizSelected===o.id?'checked':''} ${s.quizSubmitted?'disabled':''}>
+        <span>${o.label}</span>
+      </label>
+    `).join('');
+
+    let feedbackHtml = '';
+    if(s.quizSubmitted){
+      const correct = s.quizSelected === p.correct;
+      feedbackHtml = `
+        <div class="quiz-feedback ${correct?'correct':'wrong'}">
+          <b>${correct ? 'Hipótese correta.' : 'Não é essa a hipótese mais provável.'}</b>
+          ${correct ? 'Reveja o raciocínio clínico abaixo para consolidar.' : 'Revise as respostas do paciente e compare com as demais hipóteses antes de ver a explicação.'}
+        </div>
+        <button class="reveal-btn" id="reveal-btn">${s.explainOpen ? 'Ocultar explicação' : 'Ver explicação completa'}</button>
+        <div class="explain-box" id="explain-box" ${s.explainOpen?'':'hidden'}>
+          ${s.explainUnlocked ? `
+            <h4>Diagnóstico correto</h4>
+            <p>${DIAGNOSIS_OPTIONS.find(o=>o.id===p.correct).label}</p>
+            <h4>Por quê</h4>
+            <p>${p.why}</p>
+            <h4>Fisiopatologia</h4>
+            <p>${p.physio}</p>
+          ` : `
+            <div class="pw-gate">
+              <p>Explicação protegida por senha (uso do professor/monitor).</p>
+              <div class="pw-row">
+                <input type="password" id="explain-pw" placeholder="Senha" autocomplete="off">
+                <button id="explain-pw-btn">Confirmar</button>
+              </div>
+              ${s.explainError ? '<div class="pw-error">Senha incorreta. Tente novamente.</div>' : ''}
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    quizPanel.innerHTML = `
+      <h3>Hipótese diagnóstica</h3>
+      <p class="sub">Com base na investigação, qual é o diagnóstico mais provável?</p>
+      <div id="opts">${optsHtml}</div>
+      <button class="quiz-submit" id="quiz-submit-btn" ${s.quizSubmitted ? 'disabled' : (s.quizSelected ? '' : 'disabled')}>
+        ${s.quizSubmitted ? 'Diagnóstico registrado' : 'Confirmar diagnóstico'}
+      </button>
+      ${feedbackHtml}
+    `;
+
+    if(!s.quizSubmitted){
+      quizPanel.querySelectorAll('.opt').forEach(el=>{
+        el.addEventListener('click', ()=>{
+          s.quizSelected = el.dataset.opt;
+          renderQuiz();
+        });
+      });
+    }
+    const submitBtn = document.getElementById('quiz-submit-btn');
+    if(submitBtn && !s.quizSubmitted){
+      submitBtn.addEventListener('click', ()=>{
+        if(!s.quizSelected) return;
+        s.quizSubmitted = true;
+        if(!s.finishedAt) s.finishedAt = new Date();
+        renderQuiz();
+        refreshGridStatus();
+      });
+    }
+    const revealBtn = document.getElementById('reveal-btn');
+    if(revealBtn){
+      revealBtn.addEventListener('click', ()=>{
+        s.explainOpen = !s.explainOpen;
+        s.explainError = false;
+        renderQuiz();
+      });
+    }
+    const pwBtn = document.getElementById('explain-pw-btn');
+    const pwInput = document.getElementById('explain-pw');
+    if(pwBtn && pwInput){
+      const tryUnlock = ()=>{
+        if(pwInput.value === EXPLAIN_PASSWORD){
+          s.explainUnlocked = true;
+          s.explainError = false;
+        } else {
+          s.explainError = true;
+        }
+        renderQuiz();
+      };
+      pwBtn.addEventListener('click', tryUnlock);
+      pwInput.addEventListener('keydown', (e)=>{
+        if(e.key==='Enter'){ e.preventDefault(); tryUnlock(); }
+      });
+      pwInput.focus();
+    }
+  }
+
+})();
+</script>
+</body>
+</html>
